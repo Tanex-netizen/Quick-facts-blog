@@ -122,7 +122,7 @@ Before deploying, click **"Environment Variables"** and add:
 
 ```bash
 # Backend API URL (use your Render backend URL from Part 1)
-NEXT_PUBLIC_API_URL=https://quick-facts-backend.onrender.com
+NEXT_PUBLIC_API_BASE_URL=https://quick-facts-backend.onrender.com
 
 # Cloudinary Configuration
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dwcxvaswf
@@ -383,7 +383,7 @@ If you add a custom domain, update backend CORS:
 **Symptom**: Empty homepage or "Failed to fetch"
 
 **Solution**:
-1. Check `NEXT_PUBLIC_API_URL` in Vercel environment variables
+1. Check `NEXT_PUBLIC_API_BASE_URL` in Vercel environment variables
 2. Test backend API directly: `curl https://your-backend.onrender.com/api/posts`
 3. Verify database has posts (Supabase dashboard → Table Editor → posts)
 4. Check browser console for JavaScript errors
@@ -560,7 +560,7 @@ NODE_ENV=production
 
 **Frontend (Vercel)**:
 ```bash
-NEXT_PUBLIC_API_URL=https://quick-facts-backend.onrender.com
+NEXT_PUBLIC_API_BASE_URL=https://quick-facts-backend.onrender.com
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dwcxvaswf
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=quick_facts_unsigned
 NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-XXXXXXXXXXXX
