@@ -50,6 +50,18 @@ function createServer(options = {}) {
   app.use('/api/uploads', uploadsRouter);
   app.use('/api/posts', postsRouter);
 
+  app.get('/', (req, res) => {
+    res.status(200).json({ 
+      message: 'Quick Facts API is running',
+      version: '1.0.0',
+      endpoints: {
+        posts: '/api/posts',
+        upload: '/api/uploads',
+        health: '/health'
+      }
+    });
+  });
+
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   });
