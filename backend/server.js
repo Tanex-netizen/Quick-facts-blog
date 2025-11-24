@@ -11,7 +11,11 @@ const postsRouter = require('./routes/posts');
 const errorHandler = require('./middleware/errorHandler');
 const { startScheduledPostsWorker } = require('./jobs/scheduledPosts');
 
-const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:3000'];
+const DEFAULT_ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'https://quick-facts-blog.vercel.app',
+  /^https:\/\/quick-facts-blog-.*\.vercel\.app$/
+];
 
 function buildCorsOptions() {
   const rawOrigins = process.env.FRONTEND_ORIGIN;
@@ -25,7 +29,7 @@ function buildCorsOptions() {
     .map((origin) => origin.trim())
     .filter(Boolean);
 
-  return { origin: origins.length ? origins : DEFAULT_ALLOWED_ORIGINS, credentials: true };
+  return { origin: origins.length ? [...origins, ...DEFAULT_ALLOWED_ORIGINS] : DEFAULT_ALLOWED_ORIGINS, credentials: true };
 }
 
 function createServer(options = {}) {

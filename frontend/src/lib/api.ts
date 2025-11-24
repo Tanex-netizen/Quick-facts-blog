@@ -83,7 +83,7 @@ export async function fetchAllPosts(params?: {
     return response.data;
   } catch (error) {
     // If backend is not available, return mock data
-    console.warn('Backend not available, using mock data');
+    console.warn('Backend not available, using mock data:', error instanceof Error ? error.message : 'Unknown error');
     let posts = MOCK_POSTS;
     if (params?.category) {
       posts = posts.filter(p => p.category.toLowerCase() === params.category.toLowerCase());
