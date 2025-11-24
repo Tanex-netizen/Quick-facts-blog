@@ -103,7 +103,7 @@ export async function fetchAllPosts(params?: {
     console.warn('Backend not available, using mock data:', error instanceof Error ? error.message : 'Unknown error');
     let posts = MOCK_POSTS;
     if (params?.category) {
-      posts = posts.filter(p => p.category.toLowerCase() === params.category.toLowerCase());
+      posts = posts.filter(p => p.category?.toLowerCase() === params.category.toLowerCase());
     }
     return posts;
   }
@@ -131,7 +131,7 @@ export async function fetchPostsByCategory(category: string): Promise<Post[]> {
   } catch (error) {
     // If backend is not available, return mock data
     console.warn('Backend not available, using mock data');
-    return MOCK_POSTS.filter(p => p.category.toLowerCase() === category.toLowerCase());
+    return MOCK_POSTS.filter(p => p.category?.toLowerCase() === category.toLowerCase());
   }
 }
 
