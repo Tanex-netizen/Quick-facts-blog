@@ -12,8 +12,10 @@ let supabaseClient;
 
 function getSupabaseClient() {
   if (!supabaseClient) {
-    if (!supabaseUrl || !supabaseServiceRoleKey) {
-      throw new Error('Cannot create Supabase client without SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.');
+    if (!supabaseUrl || !supabaseServiceRoleKey || supabaseUrl.includes('your-project')) {
+      console.warn('⚠️  Supabase not configured - using mock data mode. Update backend/.env with real credentials.');
+      // Return a mock client that won't throw errors
+      return null;
     }
 
     supabaseClient = createClient(supabaseUrl, supabaseServiceRoleKey, {

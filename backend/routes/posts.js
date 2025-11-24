@@ -68,6 +68,49 @@ router.get('/', async (req, res, next) => {
     const supabase = req.app.locals.supabase;
     const { category, status } = req.query;
 
+    // If Supabase is not configured, return mock data
+    if (!process.env.SUPABASE_URL || process.env.SUPABASE_URL.includes('your-project')) {
+      const mockPosts = [
+        {
+          id: '1',
+          title: 'Welcome to Quick Facts Blog',
+          description: 'This is a sample post. Configure your Supabase credentials in backend/.env to see real data.',
+          image_url: 'https://images.unsplash.com/photo-1516387938699-a93567ec168e?w=800',
+          category: 'Technology',
+          published_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          scheduled_at: null
+        },
+        {
+          id: '2',
+          title: 'Amazing Space Facts',
+          description: 'Discover the wonders of the universe with these incredible space facts.',
+          image_url: 'https://images.unsplash.com/photo-1446776858070-78d87d557b9e?w=800',
+          category: 'Space',
+          published_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          scheduled_at: null
+        },
+        {
+          id: '3',
+          title: 'Health Tips for Daily Life',
+          description: 'Simple health tips that can make a big difference in your daily routine.',
+          image_url: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800',
+          category: 'Health',
+          published_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          scheduled_at: null
+        }
+      ];
+      
+      let filteredPosts = mockPosts;
+      if (category) {
+        filteredPosts = mockPosts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+      }
+      
+      return res.json(filteredPosts.map(mapPost));
+    }
+
     let query = supabase
       .from('posts')
       .select('*')
@@ -126,6 +169,49 @@ router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const supabase = req.app.locals.supabase;
+
+    // If Supabase is not configured, return mock data
+    if (!process.env.SUPABASE_URL || process.env.SUPABASE_URL.includes('your-project')) {
+      const mockPosts = {
+        '1': {
+          id: '1',
+          title: 'Welcome to Quick Facts Blog',
+          description: 'This is a sample post. Configure your Supabase credentials in backend/.env to see real data.',
+          image_url: 'https://images.unsplash.com/photo-1516387938699-a93567ec168e?w=800',
+          category: 'Technology',
+          published_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          scheduled_at: null
+        },
+        '2': {
+          id: '2',
+          title: 'Amazing Space Facts',
+          description: 'Discover the wonders of the universe with these incredible space facts.',
+          image_url: 'https://images.unsplash.com/photo-1446776858070-78d87d557b9e?w=800',
+          category: 'Space',
+          published_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          scheduled_at: null
+        },
+        '3': {
+          id: '3',
+          title: 'Health Tips for Daily Life',
+          description: 'Simple health tips that can make a big difference in your daily routine.',
+          image_url: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800',
+          category: 'Health',
+          published_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          scheduled_at: null
+        }
+      };
+      
+      const post = mockPosts[id];
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+      
+      return res.json(mapPost(post));
+    }
 
     const { data, error } = await supabase
       .from('posts')
