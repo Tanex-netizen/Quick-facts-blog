@@ -70,8 +70,13 @@ const MOCK_POSTS: Post[] = [
 ];
 
 export async function createPost(payload: CreatePostPayload): Promise<Post> {
-  const response = await client.post<Post>("/api/posts", payload);
-  return response.data;
+  try {
+    const response = await client.post<Post>("/api/posts", payload);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to create post:', error);
+    throw new Error('Backend unavailable. Please configure your backend service or Supabase credentials.');
+  }
 }
 
 export async function fetchAllPosts(params?: {
@@ -135,10 +140,20 @@ export async function uploadImage(file: File): Promise<{ url: string; publicId: 
 }
 
 export async function updatePost(id: string, payload: CreatePostPayload): Promise<Post> {
-  const response = await client.put<Post>(`/api/posts/${id}`, payload);
-  return response.data;
+  try {
+    const response = await client.put<Post>(`/api/posts/${id}`, payload);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update post:', error);
+    throw new Error('Backend unavailable. Please configure your backend service or Supabase credentials.');
+  }
 }
 
 export async function deletePost(id: string): Promise<void> {
-  await client.delete(`/api/posts/${id}`);
+  try {
+    await client.delete(`/api/posts/${id}`);
+  } catch (error) {
+    console.error('Failed to delete post:', error);
+    throw new Error('Backend unavailable. Please configure your backend service or Supabase credentials.');
+  }
 }
