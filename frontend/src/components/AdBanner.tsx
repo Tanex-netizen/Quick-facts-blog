@@ -16,7 +16,12 @@ export default function AdBanner({
   className = "",
 }: AdBannerProps) {
   const adRef = useRef<HTMLModElement>(null);
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "ca-pub-XXXXXXXXXXXXXXXX";
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "";
+
+  // Don't render if no valid AdSense client
+  if (!adsenseClient || !adsenseClient.startsWith('ca-pub-')) {
+    return null;
+  }
 
   useEffect(() => {
     const element = adRef.current;
@@ -25,33 +30,33 @@ export default function AdBanner({
     // Prevent duplicate initialization
     if ((element as HTMLElement & { __adsInitialized?: boolean }).__adsInitialized) return;
 
-    // Check if container has width before pushing
-    const width = element.clientWidth || element.offsetWidth || 0;
-    if (width < 250) {
-      // Skip if container is too small or hidden
-      return;
-    }
-
-    try {
-      // @ts-expect-error - adsbygoogle is injected by Google
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      (element as HTMLElement & { __adsInitialized?: boolean }).__adsInitialized = true;
-    } catch (error) {
-      // Silently catch errors in dev with placeholder credentials
-      if (process.env.NODE_ENV === "development") {
-        console.debug("AdSense initialization skipped");
-      } else {
-        console.error("AdSense error:", error);
+    // Wait for element to be visible and have width
+    const checkAndInitialize = () => {
+      const width = element.clientWidth || element.offsetWidth || 0;
+      if (width < 250) {
+        return; // Skip if container is too small or hidden
       }
-    }
+
+      try {
+        // @ts-expect-error - adsbygoogle is injected by Google
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        (element as HTMLElement & { __adsInitialized?: boolean }).__adsInitialized = true;
+      } catch (error) {
+        console.debug("AdSense initialization skipped:", error);
+      }
+    };
+
+    // Delay initialization to ensure container has proper dimensions
+    const timeoutId = setTimeout(checkAndInitialize, 100);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
-    <div className={`ad-container ${className}`}>
+    <div className={`ad-container min-w-[250px] ${className}`}>
       <ins
         ref={adRef}
         className="adsbygoogle"
-        style={{ display: "block" }}
+        style={{ display: "block", minWidth: "250px", minHeight: "50px" }}
         data-ad-client={adsenseClient}
         data-ad-slot={slot}
         data-ad-format={format}
