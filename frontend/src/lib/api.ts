@@ -21,6 +21,8 @@ const MOCK_POSTS: Post[] = [
     category: 'Technology',
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
+    scheduledAt: null,
+    status: 'published',
   },
   {
     id: '2',
@@ -30,6 +32,8 @@ const MOCK_POSTS: Post[] = [
     category: 'Space',
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
+    scheduledAt: null,
+    status: 'published',
   },
   {
     id: '3',
@@ -39,6 +43,8 @@ const MOCK_POSTS: Post[] = [
     category: 'Health',
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
+    scheduledAt: null,
+    status: 'published',
   },
   {
     id: '4',
@@ -48,6 +54,8 @@ const MOCK_POSTS: Post[] = [
     category: 'Nature',
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
+    scheduledAt: null,
+    status: 'published',
   },
   {
     id: '5',
@@ -57,6 +65,8 @@ const MOCK_POSTS: Post[] = [
     category: 'History',
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
+    scheduledAt: null,
+    status: 'published',
   },
   {
     id: '6',
@@ -66,6 +76,8 @@ const MOCK_POSTS: Post[] = [
     category: 'Science',
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
+    scheduledAt: null,
+    status: 'published',
   },
 ];
 
