@@ -5,7 +5,7 @@ import type { Post, CreatePostPayload } from "./types";
 
 const client = axios.create({
   baseURL: appConfig.apiBaseUrl,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
   },

@@ -46,6 +46,10 @@ router.post('/', async (req, res, next) => {
     const payload = normalizePostPayload(req.body);
     const supabase = req.app.locals.supabase;
 
+    if (!supabase) {
+      return res.status(503).json({ error: 'Backend not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+    }
+
     const { data, error } = await supabase
       .from('posts')
       .insert([payload])
@@ -240,6 +244,10 @@ router.put('/:id', async (req, res, next) => {
     const payload = normalizePostPayload(req.body);
     const supabase = req.app.locals.supabase;
 
+    if (!supabase) {
+      return res.status(503).json({ error: 'Backend not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+    }
+
     const { data, error } = await supabase
       .from('posts')
       .update(payload)
@@ -265,6 +273,10 @@ router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const supabase = req.app.locals.supabase;
+
+    if (!supabase) {
+      return res.status(503).json({ error: 'Backend not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+    }
 
     const { error } = await supabase
       .from('posts')
