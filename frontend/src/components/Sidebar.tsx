@@ -11,6 +11,10 @@ const categories = [
 ];
 
 export default function Sidebar() {
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "";
+  const hasAdsenseClient = adsenseClient.startsWith("ca-pub-");
+  const manualAdsEnabled = process.env.NEXT_PUBLIC_ADSENSE_MANUAL !== "false";
+  const showManualAds = hasAdsenseClient && manualAdsEnabled;
   return (
     <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
       {/* Categories Widget */}
@@ -31,12 +35,14 @@ export default function Sidebar() {
       </div>
 
       {/* Sidebar Ad Box - Desktop Only (300x250) */}
-      <div className="hidden lg:block card-surface p-4">
-        <p className="text-xs text-center text-ink-muted mb-3">Advertisement</p>
-        <div className="flex justify-center">
-          <AdBox slot="9876543210" width={300} height={250} />
+      {showManualAds && (
+        <div className="hidden lg:block card-surface p-4">
+          <p className="text-xs text-center text-ink-muted mb-3">Advertisement</p>
+          <div className="flex justify-center">
+            <AdBox slot="9876543210" width={300} height={250} />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Quick Info */}
       <div className="card-surface p-6">

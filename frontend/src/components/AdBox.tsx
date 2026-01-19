@@ -20,7 +20,12 @@ export default function AdBox({
   className = "",
 }: AdBoxProps) {
   const adRef = useRef<HTMLModElement>(null);
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "ca-pub-XXXXXXXXXXXXXXXX";
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "";
+
+  // Don't render if no valid AdSense client
+  if (!adsenseClient || !adsenseClient.startsWith("ca-pub-")) {
+    return null;
+  }
 
   useEffect(() => {
     const element = adRef.current;

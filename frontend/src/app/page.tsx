@@ -14,6 +14,9 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const hasAdsenseClient = (process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "").startsWith("ca-pub-");
+  const manualAdsEnabled = process.env.NEXT_PUBLIC_ADSENSE_MANUAL !== "false";
+  const showManualAds = hasAdsenseClient && manualAdsEnabled;
 
   useEffect(() => {
     async function loadPosts() {
@@ -122,7 +125,7 @@ export default function HomePage() {
                 <PostCard post={post} priority={index === 0} />
                 
                 {/* Inline Ad - Desktop: every 5 posts, Mobile: every 3 posts */}
-                {((index + 1) % 5 === 0 || (index + 1) % 3 === 0) && (
+                {showManualAds && (((index + 1) % 5 === 0) || ((index + 1) % 3 === 0)) && (
                   <div
                     className={`card-surface p-4 flex items-center justify-center ${
                       (index + 1) % 5 === 0 ? "hidden lg:flex" : "lg:hidden"

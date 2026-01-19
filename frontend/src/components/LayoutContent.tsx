@@ -8,6 +8,10 @@ import AdBanner from "@/components/AdBanner";
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "";
+  const hasAdsenseClient = adsenseClient.startsWith("ca-pub-");
+  const manualAdsEnabled = process.env.NEXT_PUBLIC_ADSENSE_MANUAL !== "false";
+  const showManualAds = hasAdsenseClient && manualAdsEnabled;
 
   if (isAdminPage) {
     // Admin page without header/footer
@@ -23,11 +27,13 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
       <div className="h-[72px] md:h-[80px]"></div>
       
       {/* Header Ad Banner - Desktop (728x90 Leaderboard) */}
-      <div className="hidden md:block bg-surface-muted border-b border-brand/5">
-        <div className="max-w-[var(--app-max-width)] mx-auto px-4 py-3 flex items-center justify-center">
-          <AdBanner slot="1234567890" format="auto" className="text-center" />
+      {showManualAds && (
+        <div className="hidden md:block bg-surface-muted border-b border-brand/5">
+          <div className="max-w-[var(--app-max-width)] mx-auto px-4 py-3 flex items-center justify-center">
+            <AdBanner slot="1234567890" format="auto" className="text-center" />
+          </div>
         </div>
-      </div>
+      )}
       
       <main className="min-h-screen">{children}</main>
       <Footer />
