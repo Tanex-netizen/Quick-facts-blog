@@ -47,8 +47,10 @@ function createServer(options = {}) {
   const shouldStartWorkers =
     typeof enableWorkers === 'boolean' ? enableWorkers : process.env.NODE_ENV !== 'test';
 
-  if (shouldStartWorkers) {
+  if (shouldStartWorkers && resolvedSupabase) {
     app.locals.stopScheduledPostsWorker = startScheduledPostsWorker(app.locals.supabase);
+  } else if (shouldStartWorkers && !resolvedSupabase) {
+    console.warn('⚠️  Scheduled posts worker disabled - Supabase not configured');
   }
 
   app.use('/api/uploads', uploadsRouter);

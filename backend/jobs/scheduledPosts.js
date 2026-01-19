@@ -1,6 +1,11 @@
 const DEFAULT_INTERVAL_MS = Number(process.env.SCHEDULER_INTERVAL_MS || 60000);
 
 async function publishDuePosts(supabase) {
+  // Skip if Supabase is not configured
+  if (!supabase) {
+    return;
+  }
+
   const now = new Date();
   const nowIso = now.toISOString();
 
