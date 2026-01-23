@@ -93,12 +93,34 @@ export default async function PostPage({ params }: PostPageProps) {
           {post.title}
         </h1>
 
-        {/* Description */}
-        {post.description && (
-          <div className="prose prose-lg max-w-none text-ink-lighter leading-relaxed mb-8">
-            <p className="whitespace-pre-wrap break-words">{post.description}</p>
-          </div>
-        )}
+        {/* Description with Middle Ad */}
+        {post.description && (() => {
+          // Split description into paragraphs (by double newlines or single newlines)
+          const paragraphs = post.description.split(/\n\n+/).filter(p => p.trim());
+          const midPoint = Math.ceil(paragraphs.length / 2);
+          const firstHalf = paragraphs.slice(0, midPoint);
+          const secondHalf = paragraphs.slice(midPoint);
+          
+          return (
+            <div className="prose prose-lg max-w-none text-ink-lighter leading-relaxed mb-8">
+              {/* First half of description */}
+              <p className="whitespace-pre-wrap break-words">{firstHalf.join('\n\n')}</p>
+              
+              {/* Middle Ad - only show if there's enough content */}
+              {paragraphs.length >= 2 && (
+                <div className="card-surface p-4 my-6 not-prose">
+                  <p className="text-xs text-center text-ink-muted mb-3">Advertisement</p>
+                  <AdBanner slot="5566778899" format="auto" responsive={true} />
+                </div>
+              )}
+              
+              {/* Second half of description */}
+              {secondHalf.length > 0 && (
+                <p className="whitespace-pre-wrap break-words">{secondHalf.join('\n\n')}</p>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Divider */}
         <hr className="border-brand/10 my-12" />

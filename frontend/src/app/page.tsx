@@ -8,12 +8,15 @@ import AdBanner from "@/components/AdBanner";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { Post } from "@/lib/types";
 
+const POSTS_PER_PAGE = 15;
+
 export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const hasAdsenseClient = (process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "").startsWith("ca-pub-");
   const manualAdsEnabled = process.env.NEXT_PUBLIC_ADSENSE_MANUAL !== "false";
   const showManualAds = hasAdsenseClient && manualAdsEnabled;
@@ -47,7 +50,49 @@ export default function HomePage() {
       );
       setFilteredPosts(filtered);
     }
+    setCurrentPage(1); // Reset to first page when search changes
   }, [searchQuery, posts]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    return pages;
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -120,7 +165,7 @@ export default function HomePage() {
           )}
 
           <div className="space-y-6">
-            {filteredPosts.map((post, index) => (
+            {currentPosts.map((post, index) => (
               <Fragment key={post.id}>
                 <PostCard post={post} priority={index === 0} />
                 
@@ -140,6 +185,55 @@ export default function HomePage() {
               </Fragment>
             ))}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-10">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-2 rounded-lg border border-brand/20 text-ink hover:bg-brand/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              
+              {getPageNumbers().map((page, index) => (
+                <button
+                  key={index}
+                  onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                  disabled={page === '...'}
+                  className={`min-w-[40px] px-3 py-2 rounded-lg border transition-colors ${
+                    page === currentPage
+                      ? 'bg-brand text-white border-brand'
+                      : page === '...'
+                      ? 'border-transparent cursor-default'
+                      : 'border-brand/20 text-ink hover:bg-brand/10'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-2 rounded-lg border border-brand/20 text-ink hover:bg-brand/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          )}
+
+          {/* Page info */}
+          {totalPages > 1 && (
+            <p className="text-center text-sm text-ink-muted mt-4">
+              Page {currentPage} of {totalPages} ({filteredPosts.length} posts)
+            </p>
+          )}
         </div>
 
         {/* Sidebar */}

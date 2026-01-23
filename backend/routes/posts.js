@@ -5,6 +5,8 @@ const { deleteImage } = require('../lib/cloudinary');
 
 const router = Router();
 
+const MAX_POSTS = 300; // Maximum number of posts to keep
+
 function normalizePostPayload(body) {
   const { title, description, imageUrl, category, scheduledAt } = body;
 
@@ -49,6 +51,54 @@ router.post('/', async (req, res, next) => {
 
     if (!supabase) {
       return res.status(503).json({ error: 'Backend not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+    }
+
+    // Check current post count
+    const { count, error: countError } = await supabase
+      .from('posts')
+      .select('*', { count: 'exact', head: true });
+
+    if (countError) {
+      console.error('Error counting posts:', countError.message);
+    }
+
+    // If we're at max posts, delete the oldest one
+    if (count >= MAX_POSTS) {
+      const { data: oldestPost, error: oldestError } = await supabase
+        .from('posts')
+        .select('id, image_url')
+        .order('created_at', { ascending: true })
+        .limit(1)
+        .single();
+
+      if (oldestError) {
+        console.error('Error finding oldest post:', oldestError.message);
+      } else if (oldestPost) {
+        // Delete oldest post from database
+        const { error: deleteError } = await supabase
+          .from('posts')
+          .delete()
+          .eq('id', oldestPost.id);
+
+        if (deleteError) {
+          console.error('Error deleting oldest post:', deleteError.message);
+        } else {
+          console.log(`Deleted oldest post (ID: ${oldestPost.id}) to maintain ${MAX_POSTS} post limit`);
+          
+          // Also delete the image from Cloudinary
+          if (oldestPost.image_url) {
+            deleteImage(oldestPost.image_url)
+              .then(result => {
+                if (result.success) {
+                  console.log(`Cleaned up image for oldest post ${oldestPost.id}`);
+                }
+              })
+              .catch(err => {
+                console.error(`Error cleaning up image for oldest post:`, err.message);
+              });
+          }
+        }
+      }
     }
 
     const { data, error } = await supabase
