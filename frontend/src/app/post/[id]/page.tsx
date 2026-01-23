@@ -96,7 +96,7 @@ export default async function PostPage({ params }: PostPageProps) {
         {/* Description */}
         {post.description && (
           <div className="prose prose-lg max-w-none text-ink-lighter leading-relaxed mb-8">
-            <p>{post.description}</p>
+            <p className="whitespace-pre-wrap">{post.description}</p>
           </div>
         )}
 

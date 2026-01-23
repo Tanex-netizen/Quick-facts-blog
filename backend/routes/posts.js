@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const { mapPost } = require('../utils/mapPost');
+const { deleteImage } = require('../lib/cloudinary');
 
 const router = Router();
 
@@ -278,6 +279,19 @@ router.delete('/:id', async (req, res, next) => {
       return res.status(503).json({ error: 'Backend not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
     }
 
+    // First, fetch the post to get the image URL
+    const { data: post, error: fetchError } = await supabase
+      .from('posts')
+      .select('image_url')
+      .eq('id', id)
+      .single();
+
+    if (fetchError) {
+      fetchError.status = fetchError.status || 500;
+      throw fetchError;
+    }
+
+    // Delete the post from database
     const { error } = await supabase
       .from('posts')
       .delete()
@@ -286,6 +300,22 @@ router.delete('/:id', async (req, res, next) => {
     if (error) {
       error.status = error.status || 500;
       throw error;
+    }
+
+    // After successful DB deletion, try to delete the image from Cloudinary
+    // This is non-blocking - if it fails, the post is still deleted
+    if (post?.image_url) {
+      deleteImage(post.image_url)
+        .then(result => {
+          if (result.success) {
+            console.log(`Cleaned up image for post ${id}`);
+          } else {
+            console.warn(`Could not delete image for post ${id}: ${result.message}`);
+          }
+        })
+        .catch(err => {
+          console.error(`Error cleaning up image for post ${id}:`, err.message);
+        });
     }
 
     res.status(204).send();
