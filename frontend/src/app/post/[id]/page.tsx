@@ -9,6 +9,95 @@ import AdBanner from "@/components/AdBanner";
 
 export const dynamic = "force-dynamic";
 
+const renderDescriptionBlock = (block: string, index: number) => {
+  const lines = block
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length === 1) {
+    const line = lines[0];
+    const headingMatch = line.match(/^(#{1,3})\s+(.*)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const text = headingMatch[2].trim();
+      const headingClass =
+        level === 1
+          ? "text-3xl md:text-4xl"
+          : level === 2
+          ? "text-2xl md:text-3xl"
+          : "text-xl md:text-2xl";
+
+      return (
+        <h2
+          key={`heading-${index}`}
+          className={`${headingClass} font-heading font-bold text-ink mt-8 mb-3`}
+        >
+          {text}
+        </h2>
+      );
+    }
+
+    if (/[:：]$/.test(line) && line.length <= 90) {
+      return (
+        <h2
+          key={`heading-${index}`}
+          className="text-2xl md:text-3xl font-heading font-bold text-ink mt-8 mb-3"
+        >
+          {line.replace(/[:：]$/, "")}
+        </h2>
+      );
+    }
+  }
+
+  const unorderedItems = lines.map((line) => line.match(/^[-*•]\s+(.*)$/)?.[1]);
+  const orderedItems = lines.map((line) => line.match(/^\d+[.)]\s+(.*)$/)?.[1]);
+
+  if (unorderedItems.every(Boolean)) {
+    return (
+      <ul
+        key={`list-${index}`}
+        className="list-disc pl-6 space-y-2 text-ink-lighter"
+      >
+        {unorderedItems.map((item, itemIndex) => (
+          <li key={`list-${index}-${itemIndex}`} className="leading-relaxed">
+            {item}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  if (orderedItems.every(Boolean)) {
+    return (
+      <ol
+        key={`olist-${index}`}
+        className="list-decimal pl-6 space-y-2 text-ink-lighter"
+      >
+        {orderedItems.map((item, itemIndex) => (
+          <li key={`olist-${index}-${itemIndex}`} className="leading-relaxed">
+            {item}
+          </li>
+        ))}
+      </ol>
+    );
+  }
+
+  const paragraphClass =
+    index === 0
+      ? "text-ink leading-relaxed font-medium"
+      : "text-ink-lighter leading-relaxed";
+
+  return (
+    <p
+      key={`para-${index}`}
+      className={`${paragraphClass} whitespace-pre-wrap break-words`}
+    >
+      {block}
+    </p>
+  );
+};
+
 interface PostPageProps {
   params: Promise<{ id: string }>;
 }
@@ -89,34 +178,37 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-heading font-bold text-ink mb-6 leading-tight">
+        <h1 className="text-5xl md:text-6xl font-heading font-bold text-ink mb-6 leading-tight tracking-tight">
           {post.title}
         </h1>
 
         {/* Description with Middle Ad */}
         {post.description && (() => {
-          // Split description into paragraphs (by double newlines or single newlines)
-          const paragraphs = post.description.split(/\n\n+/).filter(p => p.trim());
-          const midPoint = Math.ceil(paragraphs.length / 2);
-          const firstHalf = paragraphs.slice(0, midPoint);
-          const secondHalf = paragraphs.slice(midPoint);
-          
+          const normalized = post.description.replace(/\r\n/g, "\n").trim();
+          const blocks = normalized.split(/\n\s*\n/).filter((block) => block.trim());
+          const midPoint = Math.ceil(blocks.length / 2);
+          const firstHalf = blocks.slice(0, midPoint);
+          const secondHalf = blocks.slice(midPoint);
+
           return (
-            <div className="prose prose-lg max-w-none text-ink-lighter leading-relaxed mb-8">
-              {/* First half of description */}
-              <p className="whitespace-pre-wrap break-words">{firstHalf.join('\n\n')}</p>
-              
-              {/* Middle Ad - only show if there's enough content */}
-              {paragraphs.length >= 2 && (
+            <div className="prose prose-lg max-w-none mb-8">
+              <div className="space-y-4">
+                {firstHalf.map((block, index) => renderDescriptionBlock(block, index))}
+              </div>
+
+              {blocks.length >= 2 && (
                 <div className="card-surface p-4 my-6 not-prose">
                   <p className="text-xs text-center text-ink-muted mb-3">Advertisement</p>
                   <AdBanner slot="5566778899" format="auto" responsive={true} />
                 </div>
               )}
-              
-              {/* Second half of description */}
+
               {secondHalf.length > 0 && (
-                <p className="whitespace-pre-wrap break-words">{secondHalf.join('\n\n')}</p>
+                <div className="space-y-4">
+                  {secondHalf.map((block, index) =>
+                    renderDescriptionBlock(block, index + firstHalf.length)
+                  )}
+                </div>
               )}
             </div>
           );
