@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { fetchAllPosts } from "@/lib/api";
 import PostCard from "@/components/PostCard";
 import Sidebar from "@/components/Sidebar";
@@ -11,6 +12,9 @@ import type { Post } from "@/lib/types";
 const POSTS_PER_PAGE = 15;
 
 export default function HomePage() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  
   const [posts, setPosts] = useState<Post[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,21 +41,55 @@ export default function HomePage() {
     loadPosts();
   }, []);
 
+  // Handle category filtering from URL params
+  useEffect(() => {
+    if (categoryParam) {
+      const categoryLower = categoryParam.toLowerCase();
+      const categoryFiltered = posts.filter(
+        (post) => post.category?.toLowerCase() === categoryLower
+      );
+      setFilteredPosts(categoryFiltered);
+    } else {
+      setFilteredPosts(posts);
+    }
+    setCurrentPage(1);
+  }, [categoryParam, posts]);
+
+  // Handle search filtering
   useEffect(() => {
     if (searchQuery.trim() === "") {
-      setFilteredPosts(posts);
+      // If no search query, show category filter results
+      if (categoryParam) {
+        const categoryLower = categoryParam.toLowerCase();
+        const categoryFiltered = posts.filter(
+          (post) => post.category?.toLowerCase() === categoryLower
+        );
+        setFilteredPosts(categoryFiltered);
+      } else {
+        setFilteredPosts(posts);
+      }
     } else {
+      // If search query exists, combine with category filter
       const query = searchQuery.toLowerCase();
-      const filtered = posts.filter(
+      let filtered = posts.filter(
         (post) =>
           post.title.toLowerCase().includes(query) ||
           post.description?.toLowerCase().includes(query) ||
           post.category?.toLowerCase().includes(query)
       );
+      
+      // Apply category filter if present
+      if (categoryParam) {
+        const categoryLower = categoryParam.toLowerCase();
+        filtered = filtered.filter(
+          (post) => post.category?.toLowerCase() === categoryLower
+        );
+      }
+      
       setFilteredPosts(filtered);
     }
     setCurrentPage(1); // Reset to first page when search changes
-  }, [searchQuery, posts]);
+  }, [searchQuery, posts, categoryParam]);
 
   // Pagination calculations
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);

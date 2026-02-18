@@ -1,11 +1,19 @@
 "use client";
 
+import type { Metadata } from "next";
 import { useState, useEffect } from "react";
 import { uploadImage, createPost, fetchAllPosts, updatePost, deletePost } from "@/lib/api";
 import type { Post } from "@/lib/types";
 import Image from "next/image";
 import AdminLogin from "@/components/AdminLogin";
 import LoadingSpinner from "@/components/LoadingSpinner";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
