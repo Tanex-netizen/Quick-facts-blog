@@ -9,6 +9,9 @@ import AdBanner from "@/components/AdBanner";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { Post } from "@/lib/types";
 
+// Mark page as dynamic since we use useSearchParams()
+export const dynamic = "force-dynamic";
+
 const POSTS_PER_PAGE = 15;
 
 export default function HomePage() {
