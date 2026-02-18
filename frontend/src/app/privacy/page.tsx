@@ -131,15 +131,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              6. Google AdSense
-            </h2>
-            <p>
-              Quick Facts Blog uses Google AdSense for advertising. Google AdSense uses cookies to serve ads
-              based on your prior visits to our website or other websites. You may opt out of personalized
-              advertising by visiting Ads Settings at{" "}
-              <a
-                href="https://www.google.com/settings/ads"
-                tGoogle AdSense and Advertising
+              6. Google AdSense and Advertising
             </h2>
             <p>
               Quick Facts Blog uses Google AdSense for serving advertisements on our Site. Google AdSense is
@@ -150,18 +142,12 @@ export default function PrivacyPage() {
               <li>
                 <strong>Data Collection:</strong> Google collects data about your online behavior, including
                 your IP address, browser type, pages visited, and search queries, to serve personalized ads.
-              8/lThird-Party Links
-            </h2>
-            <p>
-              Our Site may contain links to third-party websites. We are not responsible for the privacy
-              practices of other sites. We encourage you to review the privacy policies of all external sites
-              before providing your personal information.
-            </p>
-          </sectioni>
+              </li>
+              <li>
                 <strong>Cookies:</strong> Google uses first-party and third-party cookies to track your activity
                 across multiple websites and serve relevant advertisements.
               </li>
-              9li>
+              <li>
                 <strong>Interest-Based Advertising:</strong> Your data may be used to create a profile of your
                 interests for targeted advertising purposes.
               </li>
@@ -175,7 +161,7 @@ export default function PrivacyPage() {
                   className="text-brand hover:text-brand-dark"
                 >
                   www.google.com/settings/ads
-              10 </a>
+                </a>
                 . You can also use the{" "}
                 <a
                   href="https://tools.google.com/dlpage/gaoptout"
@@ -197,15 +183,14 @@ export default function PrivacyPage() {
                 className="text-brand hover:text-brand-dark"
               >
                 policies.google.com/privacy
-              <1a>
-              
+              </a>
               .
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              6. Third-Party Links
+              7. Third-Party Links
             </h2>
             <p>
               Our Site may contain links to third-party websites. We are not responsible for the privacy
@@ -216,7 +201,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              7. Security
+              8. Security
             </h2>
             <p>
               We implement appropriate technical and organizational measures to protect your personal information
@@ -227,7 +212,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              8. Your Rights
+              9. Your Rights
             </h2>
             <p>You have the right to:</p>
             <ul className="list-disc pl-6 space-y-2">
@@ -241,7 +226,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              9. Changes to This Privacy Policy
+              10. Changes to This Privacy Policy
             </h2>
             <p>
               Quick Facts Blog may update this Privacy Policy from time to time. We will notify you of any changes
@@ -251,7 +236,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              10. Contact Us
+              11. Contact Us
             </h2>
             <p>
               If you have any questions about this Privacy Policy, please{" "}
