@@ -80,7 +80,26 @@ export default function PrivacyPage() {
               <li>
                 <strong>Advertising Networks:</strong> Third-party ad networks and advertisers may place cookies
                 on your device to track your browsing and serve targeted advertisements.
-              </lCookies and Tracking Technologies
+              </li>
+              <li>
+                <strong>Analytics Providers:</strong> We use analytics services to understand how visitors use
+                our Site. These services may collect data about your device and usage patterns.
+              </li>
+              <li>
+                <strong>Hosting Providers:</strong> Our Site is hosted on third-party servers that may collect
+                technical information about your access.
+              </li>
+            </ul>
+            <p className="mt-4">
+              We do not sell, trade, or rent your personal information to third parties for their own marketing
+              purposes. However, third-party vendors may process your data according to their own privacy policies,
+              which we are not responsible for. We encourage you to review the privacy policies of all third parties.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
+              5. Cookies and Tracking Technologies
             </h2>
             <p>
               Quick Facts Blog uses cookies and similar tracking technologies to enhance your experience,
