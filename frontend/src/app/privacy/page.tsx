@@ -126,11 +126,12 @@ export default function PrivacyPage() {
                 <strong>Cookie Management:</strong> You can disable cookies in your browser settings, though this
                 may limit Site functionality. Please note that disabling cookies may affect your experience.
               </li>
-            </ultion>
+            </ul>
+          </section>
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              5. Google AdSense
+              6. Google AdSense
             </h2>
             <p>
               Quick Facts Blog uses Google AdSense for advertising. Google AdSense uses cookies to serve ads
