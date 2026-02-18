@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchAllPosts } from "@/lib/api";
 import PostCard from "@/components/PostCard";
@@ -9,12 +9,9 @@ import AdBanner from "@/components/AdBanner";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { Post } from "@/lib/types";
 
-// Mark page as dynamic since we use useSearchParams()
-export const dynamic = "force-dynamic";
-
 const POSTS_PER_PAGE = 15;
 
-export default function HomePage() {
+function HomePageContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   
@@ -281,5 +278,13 @@ export default function HomePage() {
         <Sidebar />
       </div>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <HomePageContent />
+    </Suspense>
   );
 }
