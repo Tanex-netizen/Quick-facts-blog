@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import Link from "next/link";
 
 interface AdminLoginProps {
@@ -13,15 +13,31 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Add noindex meta tag on mount
+  useEffect(() => {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+
+    return () => {
+      document.head.removeChild(meta);
+    };
+  }, []);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    // Simple client-side authentication
-    // In production, this should be handled by a secure backend API
-    if (email === "admin" && password === "quickfacts@12345") {
-      // Store authentication in sessionStorage
+    // Get credentials from environment variables
+    // Fallback to hardcoded for development if env not set
+    const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin";
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "quickfacts@12345";
+
+    // Validate credentials
+    if (email === adminEmail && password === adminPassword) {
+      // Store authentication in sessionStorage (client-side only)
       sessionStorage.setItem("adminAuthenticated", "true");
       onLoginSuccess();
     } else {

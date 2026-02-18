@@ -42,7 +42,12 @@ export default function PrivacyPage() {
                 when you access the Site, including IP address, browser type, operating system, and pages visited.
               </li>
               <li>
-                <strong>Cookies:</strong> We may use cookies to enhance your experience on our Site.
+                <strong>Cookies and Tracking Technologies:</strong> We use cookies, web beacons, and similar
+                tracking technologies to collect information about your browsing activities and preferences.
+              </li>
+              <li>
+                <strong>Usage Data:</strong> We collect information about how you interact with our Site,
+                including time spent, pages viewed, links clicked, and search queries.
               </li>
             </ul>
           </section>
@@ -64,14 +69,45 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
-              4. Disclosure of Information
+              4. Third-Party Vendors and Service Providers
             </h2>
             <p>
-              We do not sell, trade, or rent your personal information to third parties. However, we may
-              disclose information when required by law or when necessary to protect the rights, privacy,
-              safety, or property of Quick Facts Blog, our users, or the public.
+              We work with third-party vendors and service providers to help us operate our Site and serve
+              advertising. These third parties may collect, use, and process your information in connection
+              with the services they provide to us, including:
             </p>
-          </section>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Advertising Networks:</strong> Third-party ad networks and advertisers may place cookies
+                on your device to track your browsing and serve targeted advertisements.
+              </lCookies and Tracking Technologies
+            </h2>
+            <p>
+              Quick Facts Blog uses cookies and similar tracking technologies to enhance your experience,
+              analyze Site usage, and serve personalized advertising. Here's what you need to know:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>
+                <strong>What are Cookies?</strong> Cookies are small data files stored on your device that
+                help us recognize you and improve your browsing experience.
+              </li>
+              <li>
+                <strong>Types of Cookies:</strong> We use session cookies (temporary) and persistent cookies
+                (remain on your device longer) to track preferences and behavior.
+              </li>
+              <li>
+                <strong>First-Party Cookies:</strong> Cookies we place directly on your device to remember
+                your preferences and Site settings.
+              </li>
+              <li>
+                <strong>Third-Party Cookies:</strong> Cookies placed by Google AdSense and other advertising
+                partners to serve targeted ads and track conversions.
+              </li>
+              <li>
+                <strong>Cookie Management:</strong> You can disable cookies in your browser settings, though this
+                may limit Site functionality. Please note that disabling cookies may affect your experience.
+              </li>
+            </ultion>
 
           <section>
             <h2 className="text-2xl font-heading font-bold text-ink mt-8 mb-4">
@@ -83,12 +119,66 @@ export default function PrivacyPage() {
               advertising by visiting Ads Settings at{" "}
               <a
                 href="https://www.google.com/settings/ads"
+                tGoogle AdSense and Advertising
+            </h2>
+            <p>
+              Quick Facts Blog uses Google AdSense for serving advertisements on our Site. Google AdSense is
+              an advertising program provided by Google, Inc. that displays ads targeted to you based on your
+              interests and browsing history.
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Data Collection:</strong> Google collects data about your online behavior, including
+                your IP address, browser type, pages visited, and search queries, to serve personalized ads.
+              8/lThird-Party Links
+            </h2>
+            <p>
+              Our Site may contain links to third-party websites. We are not responsible for the privacy
+              practices of other sites. We encourage you to review the privacy policies of all external sites
+              before providing your personal information.
+            </p>
+          </sectioni>
+                <strong>Cookies:</strong> Google uses first-party and third-party cookies to track your activity
+                across multiple websites and serve relevant advertisements.
+              </li>
+              9li>
+                <strong>Interest-Based Advertising:</strong> Your data may be used to create a profile of your
+                interests for targeted advertising purposes.
+              </li>
+              <li>
+                <strong>Opt-Out:</strong> You can opt out of Google's personalized advertising by visiting Google
+                Ads Settings at{" "}
+                <a
+                  href="https://www.google.com/settings/ads"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand hover:text-brand-dark"
+                >
+                  www.google.com/settings/ads
+              10 </a>
+                . You can also use the{" "}
+                <a
+                  href="https://tools.google.com/dlpage/gaoptout"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand hover:text-brand-dark"
+                >
+                  Google Analytics Opt-out Browser Add-on
+                </a>
+                .
+              </li>
+            </ul>
+            <p className="mt-4">
+              For more information about Google's advertising practices, please visit Google's Privacy Policy at{" "}
+              <a
+                href="https://policies.google.com/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand hover:text-brand-dark"
               >
-                www.google.com/settings/ads
-              </a>
+                policies.google.com/privacy
+              <1a>
+              
               .
             </p>
           </section>
