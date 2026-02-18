@@ -21,6 +21,18 @@ export default function Footer() {
             >
               Contact
             </a>
+            <a
+              href="/privacy"
+              className="text-sm text-ink-muted hover:text-brand transition-colors"
+            >
+              Privacy
+            </a>
+            <a
+              href="/terms"
+              className="text-sm text-ink-muted hover:text-brand transition-colors"
+            >
+              Terms
+            </a>
           </div>
         </div>
       </div>

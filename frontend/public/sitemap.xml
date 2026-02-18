@@ -13,4 +13,12 @@
     <loc>https://quickfacts.blog/contact</loc>
   </url>
 
+  <url>
+    <loc>https://quickfacts.blog/privacy</loc>
+  </url>
+
+  <url>
+    <loc>https://quickfacts.blog/terms</loc>
+  </url>
+
 </urlset>
